@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIT Vellore GPA Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1>VIT Vellore GPA Calculator</h1>
+                <p class="subtitle">Calculate your current GPA and target CGPA</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Panel - Course Input -->
+            <div class="panel left-panel">
+                <h2>Add Courses</h2>
+                <p class="panel-subtitle">Enter your subjects, grades, and credits</p>
+                
+                <div class="grade-reference">
+                    <h3>Grade Scale Reference</h3>
+                    <div class="grade-scale">
+                        <span class="grade-item"><strong>S</strong> = 10</span>
+                        <span class="grade-item"><strong>A</strong> = 9</span>
+                        <span class="grade-item"><strong>B</strong> = 8</span>
+                        <span class="grade-item"><strong>C</strong> = 7</span>
+                        <span class="grade-item"><strong>D</strong> = 6</span>
+                        <span class="grade-item"><strong>E</strong> = 5</span>
+                        <span class="grade-item"><strong>F</strong> = Fail</span>
+                    </div>
+                </div>
+
+                <!-- Course Input Form -->
+                <div class="input-form">
+                    <div class="form-group">
+                        <label for="subjectName">Subject Name</label>
+                        <input type="text" id="subjectName" placeholder="e.g., Data Structures" class="input-field">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="grade">Grade</label>
+                            <select id="grade" class="input-field">
+                                <option value="">Select Grade</option>
+                                <option value="S">S (10)</option>
+                                <option value="A">A (9)</option>
+                                <option value="B">B (8)</option>
+                                <option value="C">C (7)</option>
+                                <option value="D">D (6)</option>
+                                <option value="E">E (5)</option>
+                                <option value="F">F (Fail)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="credits">Credits</label>
+                            <input type="number" id="credits" placeholder="e.g., 3" class="input-field" min="1" max="10" step="0.5">
+                        </div>
+                    </div>
+
+                    <button class="btn-add" onclick="addCourse()">+ Add Course</button>
+                </div>
+
+                <!-- Courses List -->
+                <div class="courses-list">
+                    <h3>Added Courses</h3>
+                    <div id="coursesList" class="list-items">
+                        <p class="empty-message">No courses added yet</p>
+                    </div>
+                    <button class="btn-clear" onclick="clearAllCourses()">Clear All</button>
+                </div>
+            </div>
+
+            <!-- Right Panel - Statistics -->
+            <div class="panel right-panel">
+                <h2>GPA Statistics</h2>
+
+                <!-- Current GPA -->
+                <div class="stats-card">
+                    <div class="stat-item">
+                        <label>Current GPA</label>
+                        <div class="stat-value" id="currentGPA">0.00</div>
+                        <p class="stat-label">Semester Performance</p>
+                    </div>
+                </div>
+
+                <!-- GPA Details -->
+                <div class="stats-card">
+                    <div class="details-row">
+                        <div class="detail-item">
+                            <span class="detail-label">Total Credits:</span>
+                            <span class="detail-value" id="totalCredits">0</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Courses Taken:</span>
+                            <span class="detail-value" id="totalCourses">0</span>
+                        </div>
+                    </div>
+                    <div class="details-row">
+                        <div class="detail-item">
+                            <span class="detail-label">Total Grade Points:</span>
+                            <span class="detail-value" id="totalPoints">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CGPA Calculator -->
+                <div class="stats-card cgpa-section">
+                    <h3>CGPA Calculator</h3>
+                    <p class="cgpa-subtitle">Calculate your cumulative GPA</p>
+
+                    <div class="form-group">
+                        <label for="previousCGPA">Previous CGPA</label>
+                        <input type="number" id="previousCGPA" placeholder="Enter your previous CGPA" class="input-field" min="0" max="10" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="previousCredits">Previous Total Credits</label>
+                        <input type="number" id="previousCredits" placeholder="Total credits completed" class="input-field" min="0" step="1">
+                    </div>
+
+                    <button class="btn-calculate" onclick="calculateCGPA()">Calculate CGPA</button>
+
+                    <div class="cgpa-result" id="cgpaResult" style="display: none;">
+                        <div class="result-item">
+                            <span>New CGPA:</span>
+                            <span class="result-value" id="newCGPA">0.00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Target CGPA -->
+                <div class="stats-card target-section">
+                    <h3>Required GPA for Target CGPA</h3>
+                    <p class="cgpa-subtitle">How much GPA do you need?</p>
+
+                    <div class="form-group">
+                        <label for="currentCGPA">Current CGPA</label>
+                        <input type="number" id="currentCGPA" placeholder="Your current CGPA" class="input-field" min="0" max="10" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="targetCGPA">Target CGPA</label>
+                        <input type="number" id="targetCGPA" placeholder="Desired CGPA" class="input-field" min="0" max="10" step="0.01">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="currentTotalCredits">Current Total Credits</label>
+                        <input type="number" id="currentTotalCredits" placeholder="Total credits completed so far" class="input-field" min="0" step="1">
+                    </div>
+
+                    <button class="btn-calculate" onclick="calculateRequiredGPA()">Calculate Required GPA</button>
+
+                    <div class="required-result" id="requiredResult" style="display: none;">
+                        <div class="result-box">
+                            <p class="result-label">You need:</p>
+                            <p class="result-highlight" id="requiredGPA">0.00</p>
+                            <p class="result-label">GPA in remaining semesters</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 VIT Vellore GPA Calculator | Built for Students</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
